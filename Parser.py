@@ -397,24 +397,68 @@ class Parser:
     else:
       self.error("expected a drawing statement before " + str(self.token))
 
+  def setXYStatement(self):
+    if self.token.tag == Tag.SETXY:
+      self.check(Tag.SETXY)
+      self.check(ord("("))
+      self.expression()
+      self.check(",")
+      self.expression()
+      self.check(ord(")"))
+    else:
+      self.error("expected SETXY statement before " + str(self.token))
+
+  def setXStatement(self):
+    if self.token.tag == Tag.SETX:
+      self.check(Tag.SETX)
+      self.check(ord("("))
+      self.expression()
+      self.check(ord(")"))
+    else:
+      self.error("expected SETX statement before " + str(self.token))
+
+  def setYStatement(self):
+    if self.token.tag == Tag.SETY:
+      self.check(Tag.SETY)
+      self.check(ord("("))
+      self.expression()
+      self.check(ord(")"))
+    else:
+      self.error("expected SETY statement before " + str(self.token))
+
+  def leftStatement(self):
+    if self.token.tag == Tag.LEFT:
+      self.check(Tag.LEFT)
+      self.check(ord("("))
+      self.expression()
+      self.check(ord(")"))
+    else:
+      self.error("expected LEFT or LT statement before " + str(self.token))
+
+  def rightStatement(self):
+    if self.token.tag == Tag.RIGHT:
+      self.check(Tag.RIGHT)
+      self.check(ord("("))
+      self.expression()
+      self.check(ord(")"))
+    else:
+      self.error("expected RIGHT or LT statement before " + str(self.token))
+
+  def backwardStatement(self):
+    if self.token.tag == Tag.FORWARD:
+      self.check(Tag.FORWARD)
+      self.check(ord("("))
+      self.expression()
+      self.check(ord(")"))
+    else:
+      self.error("expected FORWARD or LT statement before " + str(self.token))
+
   """
 	Implement
-
-	def setXYStatement(self):
+		
+	def forwardStatement(self): -> Frida
 	
-	def setXStatement(self):
-	
-	def setYStatement(self):
-	
-	def leftStatement(self):
-	
-	def rightStatement(self):
-	
-	def backwardStatement(self):
-	
-	def forwardStatement(self):
-	
-	def movementStatement(self):
+	def movementStatement(self): -> Frida
 	"""
 
   def assigmentStatement(self):
