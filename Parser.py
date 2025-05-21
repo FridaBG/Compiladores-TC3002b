@@ -123,12 +123,36 @@ class Parser:
 		else:
 			self.error("expected an additive expression before " + str(self.token))
 
+	def extendedRelationalExpression(self):
+		if self.token.tag in self.firstExtendedRelationalExpression:
+			if self.token.tag == ord('<'):
+				self.check(ord('<'))
+				self.unaryExpression()
+				self.extendedRelationalExpression()
+			elif self.token.tag == ord('>'):
+				self.check(ord('>'))
+				self.unaryExpression()
+				self.extendedRelationalExpression()
+			elif self.token.tag == Tag.GEQ:
+				self.check(Tag.GEQ)
+				self.unaryExpression()
+				self.extendedRelationalExpression()
+			elif self.token.tag == Tag.LEQ:
+				self.check(Tag.LEQ)
+				self.unaryExpression()
+				self.extendedRelationalExpression()
+			else:
+				pass
+
+	def relationalExpression(self):
+		if self.token.tag in self.firstRelationalExpression:
+			self.unaryExpression()
+			self.extendedRelationalExpression()
+		else:
+			self.error("expected a relational expression before " + str(self.token))
+
 	"""
-	Implement	
-	def extendedRelationalExpression(self): -> Frida
-	
-	def relationalExpression(self): -> Frida
-	
+	Implement		
 	def extendedEqualityExpression(self): -> Frida
 	
 	def equalityExpression(self): -> Frida
