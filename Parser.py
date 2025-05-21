@@ -433,7 +433,7 @@ class Parser:
       self.expression()
       self.check(ord(")"))
     else:
-      self.error("expected LEFT or LT statement before " + str(self.token))
+      self.error("expected LEFT statement before " + str(self.token))
 
   def rightStatement(self):
     if self.token.tag == Tag.RIGHT:
@@ -442,24 +442,46 @@ class Parser:
       self.expression()
       self.check(ord(")"))
     else:
-      self.error("expected RIGHT or LT statement before " + str(self.token))
+      self.error("expected RIGHT statement before " + str(self.token))
 
-  def backwardStatement(self):
+  def forwardStatement(self):
     if self.token.tag == Tag.FORWARD:
       self.check(Tag.FORWARD)
       self.check(ord("("))
       self.expression()
       self.check(ord(")"))
     else:
-      self.error("expected FORWARD or LT statement before " + str(self.token))
+      self.error("expected FORWARD statement before " + str(self.token))
 
-  """
-	Implement
-		
-	def forwardStatement(self): -> Frida
-	
-	def movementStatement(self): -> Frida
-	"""
+  def backwardStatement(self):
+    if self.token.tag == Tag.BACKWARD:
+      self.check(Tag.BACKWARD)
+      self.check(ord("("))
+      self.expression()
+      self.check(ord(")"))
+    else:
+      self.error("expected BACKWARD statement before " + str(self.token))
+
+  def movementStatement(self):
+  if self.token.tag in self.firstMovementStatement:
+    if self.token.tag == Tag.FORWARD:
+      self.forwardStatement()
+    elif self.token.tag == Tag.BACKWARD:
+      self.backwardStatement()
+    elif self.token.tag == Tag.RIGHT:
+      self.rightStatement()
+    elif self.token.tag == Tag.LEFT:
+      self.leftStatement()
+    elif self.token.tag == Tag.SETX:
+      self.setXStatement()
+    elif self.token.tag == Tag.SETY:
+      self.setYStatement()
+    elif self.token.tag == Tag.SETXY:
+      self.setXYStatement()
+    elif self.token.tag == Tag.HOME:
+      self.check(Tag.HOME)
+  else:
+    self.error("expected a movement statement before " + str(self.token))
 
   def assigmentStatement(self):
     if self.token.tag == Tag.ID:
