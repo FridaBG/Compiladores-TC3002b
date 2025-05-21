@@ -18,6 +18,12 @@ class Parser:
 
 		self.firstExtendedAdditiveExpression = set((ord('+'), ord('-')))
 
+		self.firstAdditiveExpression = self.firstMultiplicativeExpression
+
+		self.firstExtendedRelationalExpression = set((ord('<'), ord('>')), Tag.GEQ, Tag.LEQ)
+
+		self.firstRelationalExpression = self.firstAdditiveExpression
+
 		## ADD THE OTHER FIRST SETS WE WILL BE USING ##
 
 	def error(self, extra = None):
@@ -96,20 +102,36 @@ class Parser:
 			self.extendedMultiplicativeExpression()
 		else:
 			self.error("expected an multiplicative expression before " + str(self.token))
-	
-	"""
-	Implement
+
 	def extendedAdditiveExpression(self):
-	
+		if self.token.tag in self.firstExtendedAdditiveExpression:
+			if self.token.tag == ord('+'):
+				self.check(ord('+'))
+				self.unaryExpression()
+				self.extendedAdditiveExpression()
+			elif self.token.tag == ord('-'):
+				self.check(ord('-'))
+				self.unaryExpression()
+				self.extendedAdditiveExpression()
+		else:
+			pass
+
 	def additiveExpression(self):
+		if self.token.tag in self.firstAdditiveExpression:
+			self.unaryExpression()
+			self.extendedAdditiveExpression()
+		else:
+			self.error("expected an additive expression before " + str(self.token))
+
+	"""
+	Implement	
+	def extendedRelationalExpression(self): -> Frida
 	
-	def extendedRelationalExpression(self):
+	def relationalExpression(self): -> Frida
 	
-	def relationalExpression(self):
+	def extendedEqualityExpression(self): -> Frida
 	
-	def extendedEqualityExpression(self):
-	
-	def equalityExpression(self):
+	def equalityExpression(self): -> Frida
 	
 	def extendedConditionalTerm(self):
 	
