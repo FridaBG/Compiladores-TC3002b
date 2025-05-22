@@ -2,6 +2,82 @@
 
 # Development of advanced computer science applications (TC3002B)
 
+## Proceso
+
+- Se trabajó en *pair programming* por **Daniel Felipe Hurtado** y **Frida Bailleres González**.
+
+- Se completaron las siguientes funciones, basándonos en las definiciones especificadas más adelante en este mismo README:
+
+    ```python
+    def extendedAdditiveExpression(self):
+    def additiveExpression(self):
+    def extendedRelationalExpression(self):
+    def relationalExpression(self):
+    def extendedEqualityExpression(self):
+    def equalityExpression(self):
+    def extendedConditionalTerm(self):
+    def conditionalTerm(self):
+    def extendedConditionalExpression(self):
+    def conditionalExpression(self):
+    def expression(self):
+    def setXYStatement(self):
+    def setXStatement(self):
+    def setYStatement(self):
+    def leftStatement(self):
+    def rightStatement(self):
+    def backwardStatement(self):
+    def forwardStatement(self):
+    def movementStatement(self):
+    ```
+
+- Durante el desarrollo hubo errores al compilar y fallos en los **tests 6 y 7 del bloque GOOD**, por lo que hicimos las siguientes correcciones:
+
+    - **Ajustamos la función `clearStatement`** en el parser, ya que según la gramática:
+
+        ```
+        <clear-statement> ::= (CLEAR | CLS) '(' ')'
+        ```
+
+        …`CLEAR` debe ir obligatoriamente acompañado de paréntesis. La versión anterior no los validaba correctamente. El cambio aplicado fue:
+
+        ```python
+        def clearStatement(self):
+            if self.token.tag == Tag.CLEAR:
+                self.check(Tag.CLEAR)
+                self.check(ord("("))
+                self.check(ord(")"))
+            else:
+                self.error("expected a CLEAR statement before " + str(self.token))
+        ```
+    - Agregamos la palabra reservada `CIRCLE` al diccionario del lexer:
+
+        ```python
+        self.words["CIRCLE"] = Token(Tag.CIRCLE, "CIRCLE")
+        ```
+
+    - Quitamos los paréntesis al comando `HOME` del **programa 7** de GOOD, ya que según la gramática:
+
+        ```
+        <movement-statement> ::=
+            <forward-statement> |
+            <backward-statement> |
+            <right-statement> |
+            <left-statement> |
+            <setx-statement> |
+            <sety-statement> |
+            <setxy-statement> |
+            HOME
+        ```
+
+        …`HOME` debe aparecer solo, sin `()`. Por eso, en lugar de cambiar la gramática, decidimos quitar los paréntesis del test.  
+Otra opción hubiera sido modificar la gramática para permitir también `HOME()`:
+
+
+- Los tests **#2 y #5 del bloque BAD** aparecen como *"shouldn’t pass"*, pero actualmente **sí pasan**, porque:
+	- El parser es solo sintáctico. No hace validación semántica de variables, por lo que permite usar identificadores que no han sido declarados con `VAR`.
+ 	- Para solucionarlo, se tendría que agregar una **tabla de símbolos** que rastree qué variables han sido declaradas y marcar error si se usan otras.
+
+
 ## Definition of a Logo dialect
 
 ```
