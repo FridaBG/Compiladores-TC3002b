@@ -128,6 +128,8 @@ class Lexer:
     self.words["OR"] = Token(Tag.OR, "OR")
     self.words["AND"] = Token(Tag.AND, "AND")
     self.words["MOD"] = Token(Tag.MOD, "MOD")
+    self.words["CIRCLE"] = Token(Tag.CIRCLE, "CIRCLE") #Faltaba acá el circle
+
 
   def get_next_character(self):
     if len(self.current_buffer) == 0 and len(self.next_buffer) > 0:
