@@ -407,7 +407,7 @@ class Parser:
 
   def clearStatement(self):
     if self.token.tag == Tag.CLEAR:
-        self.check(Tag.CLEAR) ## cambió pq debería ser así <clear-statement> ::= (CLEAR | CLS) '(' ')'
+        self.check(Tag.CLEAR)
         self.check(ord("("))
         self.check(ord(")"))
     else:
