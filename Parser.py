@@ -407,12 +407,11 @@ class Parser:
 
   def clearStatement(self):
     if self.token.tag == Tag.CLEAR:
-        self.check(Tag.CLEAR)
-        self.check(ord("("))
-        self.check(ord(")"))
+      self.check(Tag.CLEAR)
+      self.check(ord("("))
+      self.check(ord(")"))
     else:
-        self.error("expected a CLEAR statement before " + str(self.token))
-
+      self.error("expected a CLEAR statement before " + str(self.token))
 
   def drawingStatement(self):
     if self.token.tag in self.firstDrawingStatement:
