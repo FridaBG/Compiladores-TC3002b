@@ -35,15 +35,50 @@ class Parser:
 
     self.firstExtendedConditionalTerm = set([Tag.AND])
 
-    self.firsConditionalTerm = self.firstEqualityExpression
+    self.firstConditionalTerm = self.firstEqualityExpression
 
     self.firstExtendedConditionalExpression = set([Tag.OR])
 
-    self.firstConditionalExpression = self.firsConditionalTerm
+    self.firstConditionalExpression = self.firstConditionalTerm
 
     self.firstExpression = self.firstConditionalExpression
 
-    ## ADD THE OTHER FIRST SETS WE WILL BE USING ##
+    self.firstMovementStatement = set(
+      [
+        Tag.FORWARD,
+        Tag.BACKWARD,
+        Tag.RIGHT,
+        Tag.LEFT,
+        Tag.SETX,
+        Tag.SETY,
+        Tag.SETXY,
+        Tag.HOME,
+      ]
+    )
+
+    self.firstDrawingStatement = set(
+      [Tag.CLEAR, Tag.CIRCLE, Tag.ARC, Tag.PENUP, Tag.PENDOWN, Tag.COLOR, Tag.PENWIDTH]
+    )
+
+    self.firstSimpleStatement = (
+      set([Tag.VAR, Tag.ID, Tag.PRINT])
+      .union(self.firstMovementStatement)
+      .union(self.firstDrawingStatement)
+    )
+
+    self.firstConditionalStatement = set([Tag.IF, Tag.IFELSE])
+
+    self.firstStructuredStatement = self.firstConditionalStatement.union(
+      set([Tag.WHILE])
+    )
+
+    self.firstStatement = self.firstSimpleStatement.union(self.firstStructuredStatement)
+
+    self.firstStatementSequence = self.firstStatement
+
+    self.firstProgram = self.firstStatement
+
+    self.firstElement = set([Tag.STRING]).union(self.firstExpression)
 
   def error(self, extra=None):
     text = "Line " + str(self.lexer.line) + " - "
@@ -402,7 +437,7 @@ class Parser:
       self.check(Tag.SETXY)
       self.check(ord("("))
       self.expression()
-      self.check(",")
+      self.check(ord(","))
       self.expression()
       self.check(ord(")"))
     else:
